@@ -7,7 +7,17 @@
 
     var data = db.Query(sql);
 }
-@using WebMatrix.Data
+
+<form class="row" method="post" uiactions="/Home/Index">
+    <div class="col-3" >
+        <input type="text" placeholder="Product Name" class="form-control"/>
+    </div>
+
+    <div class="col-3">
+        <button class="btn btn-primary">Search</button>
+    </div>
+    <h2 class="text-center bg-light">All Products</h2>
+</form>
 
     <div class="row justify-content-center">
         @foreach (var row in data)
