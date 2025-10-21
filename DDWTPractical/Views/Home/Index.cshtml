@@ -3,14 +3,15 @@
 @{
     var db = Database.Open("AmazonOrders");
 
-    var sql = "Select * FROM Items ORDER BY itemName asc";
+    var sql = "Select * FROM Items WHERE itemName like CONCAT(@0, '%')";
 
-    var data = db.Query(sql);
+    var data = db.Query(sql, Request.Form["searchBar"]);
 }
+
 
 <form class="row" method="post" uiactions="/Home/Index">
     <div class="col-3" >
-        <input type="text" placeholder="Product Name" class="form-control"/>
+        <input type="text" name="searchBar" placeholder="Product Name" class="form-control"/>
     </div>
 
     <div class="col-3">
