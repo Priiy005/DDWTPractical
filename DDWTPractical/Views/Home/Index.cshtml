@@ -8,7 +8,7 @@
     var data = db.Query(sql, Request.Form["searchBar"]);
 }
 
-<form class="row" method="post" uiactions="/Home/Index">
+<form class="row" method="post" action="/Home/Index">
     <h2 class="text-center bg-light">All Products</h2>
     <div class="col-3">
         <input type="text" name="searchBar" placeholder="Product Name" class="form-control" />
