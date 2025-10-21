@@ -5,23 +5,32 @@
 
     var id = Request.QueryString["id"];
 
-    var sql = "Select * FROM Items join itemcategories on items.categoryID = itemcategories.categoryID";
+    var sql = $"Select * FROM Items join itemcategories on items.categoryID = itemcategories.categoryID where items.itemID = {id}";
 
     var data = db.QuerySingle(sql, id);
 }
 
-<div>
-    <h2 class="text-center bg-light">Product Details</h2>
-    <div class=" row justify-content-center">
-        <div class="card form-control" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">@data.itemName</h5>
-                <p class="card-text">@data.itemDescription</p>
-                <p class="card-subtitle mb-2 text-muted">Price: $@data.itemCost.ToString()</p>
-                <p class="card-subtitle mb-2 text-muted">Category: @data.categoryName</p>
+
+@if (data != null)
+{
+    <div>
+        <h2 class="text-center bg-light">Product Details</h2>
+        <div class=" row justify-content-center">
+            <div class="card form-control" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">@data.itemName</h5>
+                    <p class="card-text">@data.itemDescription</p>
+                    <p class="card-subtitle mb-2 text-muted">Price: $@data.itemCost.ToString()</p>
+                    <p class="card-subtitle mb-2 text-muted">Category: @data.categoryName</p>
+                </div>
+                <img src="@data.itemImage" class="card-img-top" alt="Image of @data.itemName " />
             </div>
-            <img src="@data.itemImage" class="card-img-top" alt="Image of @data.itemName " />
         </div>
     </div>
-</div>
+}
+else
+{
+    <h2 class="text-center text-warning bg-light">Oops no matching products returned</h2>
+    <img class="form-control" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrSuwCL0YvN1mw7-9LGO0fviTx5lv8l2mKlg&s"  alt="Image of take them socks off " />
+};
 
