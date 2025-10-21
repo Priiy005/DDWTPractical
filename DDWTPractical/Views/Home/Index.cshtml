@@ -7,19 +7,20 @@
 
     var data = db.Query(sql);
 }
+@using WebMatrix.Data
 
-<h2 class="text-center bg-light">All Products</h2>
+    <div class="row justify-content-center">
+        @foreach (var row in data)
+        {
+            <div class="card" style="width: 18rem;">
+                <img src="@row.itemImage" class="card-img-top"  alt="Image of @row.itemName "/>
+                <div class="card-body">
+                    <h5 class="card-title">@row.itemName</h5>
+                    <p class="card-text">@row.itemDescription</p>
+                    <p class="card-text">$@row.itemCost.ToString()</p>
+                    <a href="/Home/Details?id=@row.ItemID" class="btn btn-primary">Go somewhere</a>
 
-<div class="row justify-content-center>
-    @foreach (var row in data)
-    {
-        <div class="card" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">@row.itemName</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
             </div>
-        </div>
-    }
-</divclass>
+        }
+    </div>
