@@ -5,7 +5,7 @@
 
     var id = Request.QueryString["id"];
 
-    var sql = $"Select * FROM Items join itemcategories on items.categoryID = itemcategories.categoryID where items.itemID = {id}";
+    var sql = $"Select * FROM Items join ItemCategories on Items.categoryID = ItemCategories.categoryID join  (Select itemID, COUNT(Reviews.reviewID) as reviewCount, AVG(Reviews.rating) as avgRating from Reviews group by itemID) as ad on ad.itemID = Items.itemID where items.itemID = 1";
 
     var data = db.QuerySingle(sql, id);
 }
@@ -21,6 +21,14 @@
                     <p class="card-text">@data.itemDescription</p>
                     <p class="card-subtitle mb-2 text-muted">Price: $@data.itemCost.ToString()</p>
                     <p class="card-subtitle mb-2 text-muted">Category: @data.categoryName</p>
+                    @if(@data.reviewCount > 1)
+                    {
+                        <p class="card-subtitle"> @data.reviewCount Reviews @data.avgRating Avg</p>
+                    }
+                    else
+                    {
+                        <p class="card-subtitle"> @data.reviewCount Review @data.avgRating Avg</p>
+                    }
                 </div>
                 <img src="@data.itemImage" class="card-img-top" alt="Image of @data.itemName " />
             </div>
