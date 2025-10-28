@@ -1,4 +1,20 @@
-﻿
+﻿@using WebMatrix.Data
+
+@{
+    var db = Database.Open("AmazonOrders");
+
+    var sql = "Select * FROM Items as I join ItemCategories as IC on IC.categoryID = I.categoryID WHERE I.itemName like CONCAT(@0, '%') order by I.itemName asc";
+
+    if (IsPost && Request.Form["delete"] != null)
+    {
+        var del_sql = "DELETE FROM Itemss WHERE I.ItemID = @0";
+        db.QuerySingle(del_sql, Request.Form["delete"]);
+    }
+
+    var data = db.Query(sql, Request.Form["searchBar"]);
+}
+
+
 <h2 class="text-center bg-light">Product Management</h2>
 
 <form class="row" method="post" action="/Management/Index">
@@ -12,25 +28,41 @@
         </div>
     </div>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Item #</th>
-                <th scope="col">Name</th>
-                <th scope="col">Category</th>
-                <th scope="col">Cost ($)</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
+    @if (data.Count() > 0)
+    {
+<table class="table table-striped">
+    <thead>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <th scope="col">Item #</th>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Cost ($)</th>
+            <th scope="col">Actions</th>
         </tr>
-        <tbody>
-        </tbody>
-    </table>
+    </thead>
+    @foreach (var row in data)
+    {
+        <tr>
+            <td>@row.itemID</td>
+            <td>@row.itemName</td>
+            <td>@row.categoryName</td>
+            <td>@row.itemCost</td>
+            <td>
+                <div>
+                    <a href="/Management/Edit?id=@row.ItemID" class="btn btn-primary">Edit</a>
+                    <a value="@row.ItemID" name="delete" class="btn btn-primary">Delete</a>
+                </div>
+            </td>
+        </tr>
+    }
+    <tbody>
+    </tbody>
+</table>
+    }
+else
+    {
+
+    }
+
 </form>
 
