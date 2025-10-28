@@ -13,6 +13,9 @@
         try
         {
             db.QuerySingle(del_sql, Request.Form["delete"]);
+            <div class="alert alert-info" role="alert">
+                Success
+            </div>
         }
         catch
         {
@@ -30,46 +33,46 @@
 <form class="row" method="post" action="/Management/Index">
     <div class="row mb-2">
         <div class="col-3">
-            <input type="text" name ="searchBar" placeholder="Product Name" class="form-control" />
+            <input type="text" name="searchBar" placeholder="Product Name" class="form-control" />
         </div>
         <div class="col-3">
-            <button  class="btn btn-secondary">Search</button>
+            <button class="btn btn-secondary">Search</button>
             <a href="/Management/Create" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="Add a new item">New Item</a>
         </div>
     </div>
 
     @if (data.Count() > 0)
     {
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">Item #</th>
-            <th scope="col">Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">Cost ($)</th>
-            <th scope="col">Actions</th>
-        </tr>
-    </thead>
-    @foreach (var row in data)
-    {
-        <tr>
-            <td>@row.itemID</td>
-            <td>@row.itemName</td>
-            <td>@row.categoryName</td>
-            <td>@row.itemCost</td>
-            <td>
-                <div>
-                    <a href="/Management/Edit?id=@row.ItemID" class="btn btn-primary">Edit</a>
-                    <button value="@row.ItemID" name="delete" class="btn btn-primary">Delete</button>
-                </div>
-            </td>
-        </tr>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Item #</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Cost ($)</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            @foreach (var row in data)
+            {
+                <tr>
+                    <td>@row.itemID</td>
+                    <td>@row.itemName</td>
+                    <td>@row.categoryName</td>
+                    <td>@row.itemCost</td>
+                    <td>
+                        <div>
+                            <a href="/Management/Edit?id=@row.ItemID" class="btn btn-primary">Edit</a>
+                            <button value="@row.ItemID" name="delete" class="btn btn-primary">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            }
+            <tbody>
+            </tbody>
+        </table>
     }
-    <tbody>
-    </tbody>
-</table>
-    }
-else
+    else
     {
 
     }
