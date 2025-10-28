@@ -6,15 +6,15 @@
     if (IsPost)
     {
         var name = Request.Form["productName"];
-        var category = Request.Form["categoryName"];
+        var category = Request.Form["categoryID"];
         var cost = Request.Form["cost"];
         var description = Request.Form["description"];
-        var image = Request.Form["image"];
-        var sql_insert = $"Insert into Items (itemName, itemDescription, itemCost, itemImage, categoryID) values ({name}, {cost}, {description}, {image}, {category})";
-        var data = db.Execute(sql_insert);
+        var image = Request.Form["imageurl"];
+        var sql_insert = $"Insert into Items (itemName, itemDescription, itemCost, itemImage, categoryID) values (@0, @1, @2, @3, @4)";
+        var data = db.Execute(sql_insert, name, description, cost, image, Convert.ToInt32(category));
     }
 
-    var sql_categories = $"select sub.categoryID, concat(parentcat.categoryName, ' - ', sub.categoryName) as categoryName from itemcategories as sub join itemcategories as parentcat on sub.categoryID = parentcat.categoryID order by parentcat.categoryName, sub.categoryName";
+    var sql_categories = $"select sub.categoryID as catID, concat(parentcat.categoryName, ' - ', sub.categoryName) as categoryName from itemcategories as sub join itemcategories as parentcat on sub.categoryID = parentcat.categoryID order by parentcat.categoryName, sub.categoryName";
     var cat_data = db.Query(sql_categories, "");
 
 }
@@ -31,21 +31,17 @@
 
         <div>
             <p>Category</p>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Category
-                </button>
-                <ul class="dropdown-menu">
-                    @foreach (var cat in cat_data)
-                    {
-                        <li><a class="dropdown-item" name="categoryName" id="@cat.categoryID">@cat.categoryName</a></li>
-                    }
-                </ul>
-            </div>
+            <select name="categoryID" class="dropdown">
+                <option value="">Select Category</option>
+                @foreach (var cat in cat_data)
+                {
+                    <option value="@cat.catID">@cat.categoryName</option>
+                }
+            </select>
         </div>
 
         <p>Unit Cost</p>
-        <input type="text" name="cost" placeholder="0.00" class="form-control" />
+        <input type="number" name="cost" placeholder="0.00" class="form-control" />
 
         <p>Description</p>
         <textarea name="description" placeholder="description" class="form-control"></textarea>
