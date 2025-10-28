@@ -5,13 +5,23 @@
 
     var sql = "Select * FROM Items as I join ItemCategories as IC on IC.categoryID = I.categoryID WHERE I.itemName like CONCAT(@0, '%') order by I.itemName asc";
 
+    var data = db.Query(sql, Request.Form["searchBar"]);
+
     if (IsPost && Request.Form["delete"] != null)
     {
-        var del_sql = "DELETE FROM Itemss WHERE I.ItemID = @0";
-        db.QuerySingle(del_sql, Request.Form["delete"]);
+        var del_sql = "DELETE FROM Items WHERE Items.ItemID = @0;";
+        try
+        {
+            db.QuerySingle(del_sql, Request.Form["delete"]);
+        }
+        catch
+        {
+            <div class="alert alert-danger" role="alert">
+                Cannot be deleted
+            </div>
+        }
     }
 
-    var data = db.Query(sql, Request.Form["searchBar"]);
 }
 
 
@@ -20,11 +30,11 @@
 <form class="row" method="post" action="/Management/Index">
     <div class="row mb-2">
         <div class="col-3">
-            <input type="text" name="text" placeholder="Product Name" class="form-control" />
+            <input type="text" name ="searchBar" placeholder="Product Name" class="form-control" />
         </div>
         <div class="col-3">
-            <button class="btn btn-secondary">Search</button>
-            <button href="/Management/Create" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="Add a new item">New Item</button>
+            <button  class="btn btn-secondary">Search</button>
+            <a href="/Management/Create" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="Add a new item">New Item</a>
         </div>
     </div>
 
@@ -50,7 +60,7 @@
             <td>
                 <div>
                     <a href="/Management/Edit?id=@row.ItemID" class="btn btn-primary">Edit</a>
-                    <a value="@row.ItemID" name="delete" class="btn btn-primary">Delete</a>
+                    <button value="@row.ItemID" name="delete" class="btn btn-primary">Delete</button>
                 </div>
             </td>
         </tr>
