@@ -1,1 +1,36 @@
-﻿<h2 class="text-center">Index</h2> 
+﻿
+<h2 class="text-center bg-light">Product Management</h2>
+
+<form class="row" method="post" action="/Management/Index">
+    <div class="row mb-2">
+        <div class="col-3">
+            <input type="text" name="text" placeholder="Product Name" class="form-control" />
+        </div>
+        <div class="col-3">
+            <button class="btn btn-secondary">Search</button>
+            <button href="/Management/Create" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="Add a new item">New Item</button>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Item #</th>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Cost ($)</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tbody>
+        </tbody>
+    </table>
+</form>
+
