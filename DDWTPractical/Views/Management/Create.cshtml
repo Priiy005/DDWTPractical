@@ -3,7 +3,18 @@
 @{
     var db = Database.Open("AmazonOrders");
 
-    var sql_categories = $"select * from itemcategories";
+    if (IsPost)
+    {
+        var name = Request.Form["productName"];
+        var category = Request.Form["categoryName"];
+        var cost = Request.Form["cost"];
+        var description = Request.Form["description"];
+        var image = Request.Form["image"];
+        var sql_insert = $"Insert into Items (itemName, itemDescription, itemCost, itemImage, categoryID) values ({name}, {cost}, {description}, {image}, {category})";
+        var data = db.Execute(sql_insert);
+    }
+
+    var sql_categories = $"select sub.categoryID, concat(parentcat.categoryName, ' - ', sub.categoryName) as categoryName from itemcategories as sub join itemcategories as parentcat on sub.categoryID = parentcat.categoryID order by parentcat.categoryName, sub.categoryName";
     var cat_data = db.Query(sql_categories, "");
 
 }
@@ -27,7 +38,7 @@
                 <ul class="dropdown-menu">
                     @foreach (var cat in cat_data)
                     {
-                        <li><a class="dropdown-item" name="categoryName" id="@cat.categoryID">@cat.parentCategory - @cat.categoryName</a></li>
+                        <li><a class="dropdown-item" name="categoryName" id="@cat.categoryID">@cat.categoryName</a></li>
                     }
                 </ul>
             </div>
