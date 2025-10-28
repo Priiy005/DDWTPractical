@@ -5,7 +5,7 @@
 
     var id = Request.QueryString["id"];
 
-    var sql = $"Select * FROM Items join ItemCategories on Items.categoryID = ItemCategories.categoryID join  (Select itemID, COUNT(Reviews.reviewID) as reviewCount, AVG(Reviews.rating) as avgRating from Reviews group by itemID) as ad on ad.itemID = Items.itemID where items.itemID = @0";
+    var sql = $"Select * FROM Items join ItemCategories on Items.categoryID = ItemCategories.categoryID left join (Select itemID, COUNT(Reviews.reviewID) as reviewCount, AVG(Reviews.rating) as avgRating from Reviews group by itemID) as ad on ad.itemID = Items.itemID where items.itemID = @0";
 
     var data = db.QuerySingle(sql, id);
 }

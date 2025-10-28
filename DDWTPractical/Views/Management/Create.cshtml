@@ -10,8 +10,9 @@
         var cost = Request.Form["cost"];
         var description = Request.Form["description"];
         var image = Request.Form["imageurl"];
-        var sql_insert = $"Insert into Items (itemName, itemDescription, itemCost, itemImage, categoryID) values (@0, @1, @2, @3, @4)";
-        var data = db.Execute(sql_insert, name, description, cost, image, Convert.ToInt32(category));
+        var sql_insert = $"Insert into Items (itemName, itemDescription, itemCost, itemImage, categoryID) values (@0, @1, @2, @3, @4); select scope_identity()";
+        var data = db.QueryValue(sql_insert, name, description, cost, image, Convert.ToInt32(category));
+        Response.Redirect("/Management/Edit?id=" + data);
     }
 
     var sql_categories = $"select sub.categoryID as catID, concat(parentcat.categoryName, ' - ', sub.categoryName) as categoryName from itemcategories as sub join itemcategories as parentcat on sub.categoryID = parentcat.categoryID order by parentcat.categoryName, sub.categoryName";
